@@ -1,0 +1,115 @@
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.util.Scanner;
+
+public class wordle extends Canvas implements MouseListener, KeyListener, Runnable{
+	
+	private String sol;
+	private String ges;
+	private String[][] result;
+	
+	private int row;
+	
+	public static final int SCALE = 100;
+	public static final int OFFSET = 10;
+	
+	
+
+	public wordle(){
+		
+		setBackground(Color.WHITE);
+		
+		Scanner in = new Scanner(System.in);
+		
+		sol = "match";
+		row=0;
+		result = new String[5][6];
+		for(int a=0;a<result.length;a++) {
+			for(int b=0;b<result[a].length;b++) { 
+				result[a][b] = " ";
+				System.out.println(result[a][b]);
+			}
+		}
+		
+		
+		
+		while(in.hasNext()) {
+			ges=in.next();
+			//System.out.println(compare(ges,sol));
+		}
+		
+		addMouseListener( this);
+		setFocusable(true);
+
+	}
+	
+	public void compare(String guess, String solution) {
+		for(int x=0;x<guess.length();x++) {
+			char guessletter = guess.charAt(x);
+			char solutionletter = solution.charAt(x);
+			if(guessletter==solutionletter) {
+				result[row][x]="Green";
+			}
+			else if (solution.indexOf(guessletter) != -1) {
+				result[row][x]="Yellow";
+			}
+			else {
+				result[row][x]="Grey";
+			}
+		}
+		String a="";
+		for(int x=0;x<result.length;x++) {
+			a+= result[x] + " ";
+			
+		}
+		repaint();
+		row++;
+	}
+	
+	public void paint(Graphics window) {
+		window.drawString("Wordle", 200, 10);
+		drawGrid(window);
+		
+	}
+	
+	public void drawGrid( Graphics window)
+	{
+		//set the color 
+		int i =0; //x
+		int j=0;//y
+		
+		for(int a=0;a<result.length;a++) {
+			for(int b=0;b<result[a].length;b++) {
+				if(result[a][b].equals(" ")) {
+					window.setColor(Color.WHITE);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("grey")) {
+					window.setColor(Color.GRAY);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("yellow")) {
+					window.setColor(Color.YELLOW);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("green")) {
+					window.setColor(Color.GREEN);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				i=i+SCALE+OFFSET;
+				
+			}
+			j=j+SCALE+OFFSET;
+			i=0;
+		}
+	}
+	
+	public static void main(String[] args) throws Exception
+	{
+		new wordle().run();
+	}
+
+}
