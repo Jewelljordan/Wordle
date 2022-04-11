@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+public class wordle {
+	private String sol;
+	private String ges;
+
+	public void run() throws Exception{
+		// TODO Auto-generated method stub
+		Scanner in = new Scanner(System.in);
+		sol = "match";
+		while(in.hasNext()) {
+			ges=in.next();
+			System.out.println(match(ges,sol));
+		}
+
+	}
+	
+	public String match(String guess, String solution) {
+		String[] result = new String[5];
+		for(int x=0;x<guess.length();x++) {
+			char guessletter = guess.charAt(x);
+			char solutionletter = solution.charAt(x);
+			if(guessletter==solutionletter) {
+				result[x]="Green";
+			}
+			else if (solution.indexOf(guessletter) != -1) {
+				result[x]="Yellow";
+			}
+			else {
+				result[x]="Grey";
+			}
+		}
+		String a="";
+		for(int x=0;x<result.length;x++) {
+			a+= result[x] + " ";
+		}
+		return a;
+	}
+	
+	public static void main(String[] args) throws Exception
+	{
+		new wordle().run();
+	}
+
+}
