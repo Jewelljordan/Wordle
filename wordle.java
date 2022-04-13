@@ -1,11 +1,14 @@
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class wordle {
 	private String sol;
 	private String ges;
 	private int guessesLeft;
 	private boolean wins;
-
+	//
+	//should work for double letters - only gives one yellow if there's only one in the word. test this!!
+	//
 	public void run() throws Exception{
 		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in);
@@ -126,13 +129,24 @@ public class wordle {
 				}
 			}
 			else{
-				System.out.println("That is not a word.");
+				System.out.println("That is not a valid, 5-letter word.");
 			}
 		}
 
 	}
 	
 	public String match(String guess, String solution) {
+		TreeMap<Character, Integer> m = new TreeMap<Character, Integer>();
+		for(int one=0;one<solution.length();one++) {
+			char character = solution.charAt(one);
+			if(m.get(character)==null) {
+				m.put(character,1);
+			}
+			else {
+				m.put(character, m.get(character)+1);
+			}
+		}
+		
 		String[] result = new String[5];
 		wins = true;
 		for(int x=0;x<guess.length();x++) {
@@ -140,10 +154,17 @@ public class wordle {
 			char solutionletter = solution.charAt(x);
 			if(guessletter==solutionletter) {
 				result[x]="Green";
+				m.put(guessletter,m.get(guessletter)-1);
 			}
-			else if (solution.indexOf(guessletter) != -1) {
-				result[x]="Yellow";
-				wins = false;
+			else if (m.get(guessletter)!=null) {
+				if(m.get(guessletter)>0) {
+					result[x]="Yellow";
+					wins = false;
+					m.put(guessletter,m.get(guessletter)-1);	
+				}
+				else {
+					result[x]="Grey";
+				}
 			}
 			else {
 				result[x]="Grey";
