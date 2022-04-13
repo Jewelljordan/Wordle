@@ -6,6 +6,7 @@ public class wordle {
 	private String ges;
 	private int guessesLeft;
 	private boolean wins;
+	private TreeMap<Character,String> keyboardLetters;
 	//
 	//should work for double letters - only gives one yellow if there's only one in the word. test this!!
 	//
@@ -13,6 +14,11 @@ public class wordle {
 		// TODO Auto-generated method stub
 		Scanner in = new Scanner(System.in);
 		guessesLeft = 6;
+		keyboardLetters = new TreeMap<Character,String>();
+		String abcs = "abcdefghijklmnopqrstuvwxyz";
+		for(int z=0;z<abcs.length();z++) {
+			keyboardLetters.put(abcs.charAt(z),"Gray");
+		}
 		//here's the flat String and an array if it's easier to copy/paste this into the code:
 		String words = "which, there, their, about, would, these, other, words, could, write, first, water, after, where, right, think, "
 						+ "three, years, place, sound, great, again, still, every, small, found, those, never, under, might, while, house,"
@@ -118,6 +124,17 @@ public class wordle {
 			ges=in.next();
 			if(words.contains(ges.toLowerCase())) {
 				System.out.println(match(ges,sol));
+				/*/for(Character ch:keyboardLetters.keySet()) {
+					if(keyboardLetters.get(ch).contentEquals("Green")){
+						System.out.print(" " + ch + "=Green ");
+					}
+					if(keyboardLetters.get(ch).contentEquals("Yellow")){
+						System.out.print(" " + ch + "=Yellow ");
+					}
+					if(keyboardLetters.get(ch).contentEquals("DarkGray")){
+						System.out.print(" " + ch + "=DarkGray ");
+					}
+				}/*/
 				if(wins==true) {
 					System.out.println("You won!");
 					break;
@@ -153,6 +170,7 @@ public class wordle {
 			char guessletter = guess.charAt(x);
 			char solutionletter = solution.charAt(x);
 			if(guessletter==solutionletter) {
+				keyboardLetters.put(guessletter, "Green");
 				result[x]="Green";
 				m.put(guessletter,m.get(guessletter)-1);
 			}
@@ -160,13 +178,18 @@ public class wordle {
 				if(m.get(guessletter)>0) {
 					result[x]="Yellow";
 					wins = false;
-					m.put(guessletter,m.get(guessletter)-1);	
+					m.put(guessletter,m.get(guessletter)-1);
+					if(!(keyboardLetters.get(guessletter).equals("Green"))) {
+						keyboardLetters.put(guessletter, "Yellow");
+					}
 				}
 				else {
+					keyboardLetters.put(guessletter,"DarkGray");
 					result[x]="Grey";
 				}
 			}
 			else {
+				keyboardLetters.put(guessletter,"DarkGray");
 				result[x]="Grey";
 				wins = false;
 			}
