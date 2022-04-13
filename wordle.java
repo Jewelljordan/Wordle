@@ -167,8 +167,8 @@ public class wordle {
 		String[] result = new String[5];
 		wins = true;
 		for(int x=0;x<guess.length();x++) {
-			char guessletter = guess.charAt(x);
-			char solutionletter = solution.charAt(x);
+			char guessletter = Character.toLowerCase(guess.charAt(x));
+			char solutionletter = Character.toLowerCase(solution.charAt(x));
 			if(guessletter==solutionletter) {
 				keyboardLetters.put(guessletter, "Green");
 				result[x]="Green";
