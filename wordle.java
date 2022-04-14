@@ -141,7 +141,7 @@ public class wordle {
 				}
 				guessesLeft--;
 				if(guessesLeft==0) {
-					System.out.println("You lost.");
+					System.out.println("You lost. The word was " + sol);
 					break;
 				}
 			}
@@ -174,7 +174,7 @@ public class wordle {
 				result[x]="Green";
 				m.put(guessletter,m.get(guessletter)-1);
 			}
-			else if (m.get(guessletter)!=null) {
+			/*/else if (m.get(guessletter)!=null) {
 				if(m.get(guessletter)>0) {
 					result[x]="Yellow";
 					wins = false;
@@ -187,13 +187,27 @@ public class wordle {
 					keyboardLetters.put(guessletter,"DarkGray");
 					result[x]="Grey";
 				}
-			}
+			}/*/
 			else {
 				keyboardLetters.put(guessletter,"DarkGray");
 				result[x]="Grey";
 				wins = false;
 			}
-		}
+		}//
+		for(int x=0;x<guess.length();x++) {
+			char guessletter = Character.toLowerCase(guess.charAt(x));
+			char solutionletter = Character.toLowerCase(solution.charAt(x));
+			if (m.get(guessletter)!=null && !(m.get(guessletter).equals("Green"))) {
+				if(m.get(guessletter)>0) {
+					result[x]="Yellow";
+					wins = false;
+					m.put(guessletter,m.get(guessletter)-1);
+					if(!(keyboardLetters.get(guessletter).equals("Green"))) {
+						keyboardLetters.put(guessletter, "Yellow");
+					}
+				}
+			}
+		}//
 		String a="";
 		for(int x=0;x<result.length;x++) {
 			a+= result[x] + " ";
