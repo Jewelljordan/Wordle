@@ -120,6 +120,7 @@ public class wordle {
 		String[] matchwords = words.split(", ");
 		int random = (int)(Math.random()*matchwords.length);
 		sol = matchwords[random];
+		//sol = "";
 		while(in.hasNext()) {
 			ges=in.next();
 			if(words.contains(ges.toLowerCase())) {
@@ -197,14 +198,12 @@ public class wordle {
 		for(int x=0;x<guess.length();x++) {
 			char guessletter = Character.toLowerCase(guess.charAt(x));
 			char solutionletter = Character.toLowerCase(solution.charAt(x));
-			if (m.get(guessletter)!=null && !(m.get(guessletter).equals("Green"))) {
-				if(m.get(guessletter)>0) {
+			if (m.get(guessletter)!=null && !(m.get(guessletter).equals("Green") && !(keyboardLetters.get(guessletter).equals("Green")))) {
+				if(m.get(guessletter)>0 && !(keyboardLetters.get(guessletter).equals("Green"))) {
 					result[x]="Yellow";
 					wins = false;
 					m.put(guessletter,m.get(guessletter)-1);
-					if(!(keyboardLetters.get(guessletter).equals("Green"))) {
-						keyboardLetters.put(guessletter, "Yellow");
-					}
+					keyboardLetters.put(guessletter, "Yellow");
 				}
 			}
 		}//
