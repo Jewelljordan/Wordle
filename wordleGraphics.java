@@ -53,7 +53,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		// TODO Auto-generated method stub
 		//Scanner in = new Scanner(System.in);
 		letx=65;
-		lety=140;
+		lety=100;
 		guessesLeft = 6;
 		typed=" ";
 		keyboardLetters = new TreeMap<Character,String>();
@@ -170,39 +170,6 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			}
 		}
 		repaint();
-		
-		/*while(in.hasNext()) {
-			ges=in.next();
-			if(words.contains(ges.toLowerCase())) {
-				System.out.println(match(ges,sol));
-				repaint();
-						for(Character ch:keyboardLetters.keySet()) {
-							if(keyboardLetters.get(ch).contentEquals("Green")){
-								System.out.print(" " + ch + "=Green ");
-							}
-							if(keyboardLetters.get(ch).contentEquals("Yellow")){
-								System.out.print(" " + ch + "=Yellow ");
-							}
-							if(keyboardLetters.get(ch).contentEquals("DarkGray")){
-								System.out.print(" " + ch + "=DarkGray ");
-							}
-						}
-				if(wins==true) {
-					System.out.println("You won!");
-					break;
-				}
-				guessesLeft--;
-				if(guessesLeft==0) {
-					System.out.println("You lost.");
-					break;
-				}
-			}
-			
-			else{
-				System.out.println("That is not a valid, 5-letter word.");
-			}
-			
-		}*/
 	}
 	
 	public String match(String guess, String solution) {
@@ -259,9 +226,40 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		window.drawString("Wordle", 325, 50);
 		drawRow(window);
 		drawTyped(window);
-		//
 		drawKeyboard(window);
 		
+	}
+	
+	public void drawRow( Graphics window) //draws the row after its been entered
+	{
+		//set the color 
+		int i =140; //x
+		int j=80;//y
+		
+		for(int a=0;a<result.length;a++) {
+			for(int b=0;b<result[a].length;b++) {
+				if(result[a][b].equals(" ")) {
+					window.setColor(Color.WHITE);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("Grey")) {
+					window.setColor(Color.GRAY);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("Yellow")) {
+					window.setColor(Color.YELLOW);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				else if(result[a][b].equals("Green")) {
+					window.setColor(Color.GREEN);
+					window.fillRect(i, j, SCALE, SCALE);
+				}
+				i=i+SCALE+OFFSET;
+				
+			}
+			j=j+SCALE+OFFSET;
+			i=140;
+		}
 	}
 	
 	public void drawKeyboard( Graphics window) //draws the keyboard at the bottom
@@ -303,7 +301,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 				window.setColor(Color.YELLOW);
 			}
 			if(keyboardLetters.get(rowTwo.charAt(a)).contentEquals("Gray")) {
-				window.setColor(Color.GRAY);
+				window.setColor(Color.WHITE);
 			}
 			if(keyboardLetters.get(rowTwo.charAt(a)).contentEquals("DarkGray")) {
 				window.setColor(Color.darkGray);
@@ -336,39 +334,8 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		}
 	}
 	
-	public void drawRow( Graphics window) //draws the row after its been entered
-	{
-		//set the color 
-		int i =140; //x
-		int j=80;//y
-		
-		for(int a=0;a<result.length;a++) {
-			for(int b=0;b<result[a].length;b++) {
-				if(result[a][b].equals(" ")) {
-					window.setColor(Color.WHITE);
-					window.fillRect(i, j, SCALE, SCALE);
-				}
-				else if(result[a][b].equals("Grey")) {
-					window.setColor(Color.GRAY);
-					window.fillRect(i, j, SCALE, SCALE);
-				}
-				else if(result[a][b].equals("Yellow")) {
-					window.setColor(Color.YELLOW);
-					window.fillRect(i, j, SCALE, SCALE);
-				}
-				else if(result[a][b].equals("Green")) {
-					window.setColor(Color.GREEN);
-					window.fillRect(i, j, SCALE, SCALE);
-				}
-				i=i+SCALE+OFFSET;
-				
-			}
-			j=j+SCALE+OFFSET;
-			i=140;
-		}
-	}
-	
 	public void drawTyped(Graphics window) {
+		window.setFont(new Font("Arial",Font.BOLD, 40));
 		window.setColor(Color.BLACK);
 		letx=65;
 		for(int x=0;x<typed.length();x++) {
@@ -380,23 +347,27 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		System.out.println(e.getKeyCode());
 		String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";	
-		if(letters.indexOf(e.getKeyChar())!=-1) {
-			int index = letters.indexOf(e.getKeyChar());
-			String in = letters.substring(index,index+1);
-			typed+= in;
+		if(e.getKeyCode()==10) {
+			ges=typed;
+			match(ges,sol);
+			System.out.println(result[0][0]);
+			
 			repaint();
+			lety= lety+SCALE+OFFSET;
+			typed=" ";
+			//repaint();
 		}
 		else if(e.getKeyCode()==8) {
 			typed=typed.substring(0,typed.length()-1);
 			repaint();
 		}
-		else if(e.getKeyCode()==10) {
-			ges=typed;
-			match(ges,sol);
-			System.out.println(result[0][0]);
-			lety= lety+SCALE+OFFSET;
-			typed="";
+		else if(letters.indexOf(e.getKeyChar())!=-1 && typed.length()<=5) {
+			int index = letters.indexOf(e.getKeyChar());
+			String in = letters.substring(index,index+1);
+			typed+= in;
+			repaint();
 		}
+		
 	}
 
 	@Override
@@ -404,6 +375,4 @@ public class wordleGraphics extends JPanel implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {}
-
-
 }
