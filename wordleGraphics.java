@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class wordleGraphics extends JPanel implements KeyListener {
+public class wordlesoclose extends JPanel implements KeyListener {
 	
 	private String sol;
 	private String words;
@@ -36,7 +36,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	public static void main(String[] args) 
 	{
 		JFrame frame = new JFrame("Wordle");
-		wordleGraphics canvas = new wordleGraphics();
+		wordlesoclose canvas = new wordlesoclose();
 		frame.setSize(850,800); 
 		frame.add(canvas);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,7 +45,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		
 	}
 
-	public wordleGraphics() {
+	public wordlesoclose() {
 		addKeyListener(this);
 		setFocusable(true);
 		//use setup 
@@ -176,10 +176,12 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		repaint();
 	}
 	
-	public String match(String guess, String solution) {
+	public Boolean match(String guess, String solution) {
 	   if(words.contains(guess)==true) {
 		   alreadyTyped[6-guessesLeft] = guess;
 		   guessesLeft--;
+		   
+	   
 		TreeMap<Character, Integer> m = new TreeMap<Character, Integer>();
 		for(int one=0;one<solution.length();one++) {
 			char character = solution.charAt(one);
@@ -225,9 +227,13 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			a+= result[x] + " ";
 		}
 		row++;
-		return a;
+		//return a;
+		return true;
 	   }
-	   return "";
+	   //return "";
+	   else {
+		   return false;
+	   }
 	}
 	
 	public void paint(Graphics window) {
@@ -376,11 +382,15 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";	
 		if(e.getKeyCode()==10) {
 			ges=typed;
-			match(ges,sol);
-			System.out.println(result[0][0]);
-			repaint();
-			lety= lety+SCALE+OFFSET;
-			
+			if(match(ges,sol)) {
+				System.out.println(result[0][0]);
+				repaint();
+				lety= lety+SCALE+OFFSET;
+			}
+			else {
+				typed="";
+				repaint();
+			}
 			typed=" ";
 			//repaint();
 		}
