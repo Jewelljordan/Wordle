@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 public class wordleGraphics extends JPanel implements KeyListener {
 	
 	private String sol;
+	private String words;
 	private String typed;
+	private String[] alreadyTyped;
 	private String ges;
 	private String[][] result;
 	private int guessesLeft;
@@ -62,7 +64,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			keyboardLetters.put(abcs.charAt(z),"Gray");
 		}
 		//here's the flat String and an array if it's easier to copy/paste this into the code:
-		String words = "which, there, their, about, would, these, other, words, could, write, first, water, after, where, right, think, "
+		words = "which, there, their, about, would, these, other, words, could, write, first, water, after, where, right, think, "
 								+ "three, years, place, sound, great, again, still, every, small, found, those, never, under, might, while, house,"
 								+ " world, below, asked, going, large, until, along, shall, being, often, earth, began, since, study, night, light, "
 								+ "above, paper, parts, young, story, point, times, heard, whole, white, given, means, music, miles, thing, today,"
@@ -163,7 +165,9 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		int random = (int)(Math.random()*matchwords.length);
 		sol = matchwords[random];
 		result = new String[6][5];
+		alreadyTyped = new String[6];
 		for(int a=0;a<result.length;a++) {
+			alreadyTyped[a] = " ";
 			for(int b=0;b<result[a].length;b++) { 
 				result[a][b] = " ";
 				System.out.println(result[a][b]);
@@ -173,6 +177,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	}
 	
 	public String match(String guess, String solution) {
+	   if(words.contains(guess)==true) {
 		TreeMap<Character, Integer> m = new TreeMap<Character, Integer>();
 		for(int one=0;one<solution.length();one++) {
 			char character = solution.charAt(one);
@@ -219,6 +224,8 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		}
 		row++;
 		return a;
+	   }
+	   return "";
 	}
 	
 	public void paint(Graphics window) {
@@ -351,9 +358,9 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			ges=typed;
 			match(ges,sol);
 			System.out.println(result[0][0]);
-			
 			repaint();
 			lety= lety+SCALE+OFFSET;
+			
 			typed=" ";
 			//repaint();
 		}
