@@ -55,7 +55,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		// TODO Auto-generated method stub
 		//Scanner in = new Scanner(System.in);
 		letx=65;
-		lety=100;
+		lety=120;
 		guessesLeft = 6;
 		typed=" ";
 		keyboardLetters = new TreeMap<Character,String>();
@@ -178,6 +178,8 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	
 	public String match(String guess, String solution) {
 	   if(words.contains(guess)==true) {
+		   alreadyTyped[6-guessesLeft] = guess;
+		   guessesLeft--;
 		TreeMap<Character, Integer> m = new TreeMap<Character, Integer>();
 		for(int one=0;one<solution.length();one++) {
 			char character = solution.charAt(one);
@@ -234,13 +236,15 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		drawRow(window);
 		drawTyped(window);
 		drawKeyboard(window);
-		
+		if(guessesLeft==0) {
+			window.drawString("GAME OVER", 225, 50);
+		}
 	}
 	
 	public void drawRow( Graphics window) //draws the row after its been entered
 	{
 		//set the color 
-		int i =140; //x
+		int i =135; //x
 		int j=80;//y
 		
 		for(int a=0;a<result.length;a++) {
@@ -267,6 +271,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			j=j+SCALE+OFFSET;
 			i=140;
 		}
+		drawStrings(window);
 	}
 	
 	public void drawKeyboard( Graphics window) //draws the keyboard at the bottom
@@ -341,10 +346,25 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		}
 	}
 	
+	public void drawStrings(Graphics window) {
+		int i =95; //x
+		int j=120;//y
+		window.setColor(Color.BLACK);
+		for(int a=0;a<6;a++) {
+			String strong = alreadyTyped[a];
+			for(int b=0;b<strong.length();b++) {
+				window.drawString(alreadyTyped[a].substring(b,b+1), i, j);
+				i=i+SCALE+OFFSET;
+			}
+			j=j+SCALE+OFFSET;
+			i=95;
+		}
+	}
+	
 	public void drawTyped(Graphics window) {
 		window.setFont(new Font("Arial",Font.BOLD, 40));
 		window.setColor(Color.BLACK);
-		letx=65;
+		letx=100;
 		for(int x=0;x<typed.length();x++) {
 			window.drawString(typed.substring(x,x+1), letx,lety);
 			letx=letx+SCALE+OFFSET;
