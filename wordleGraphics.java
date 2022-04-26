@@ -238,16 +238,23 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	}
 	
 	public void paint(Graphics window) {
+		window.setColor(Color.WHITE);
+		window.fillRect(0, 0, 1800, 800);
+		window.setColor(Color.BLACK);
 		window.setFont(new Font("Arial",Font.BOLD, 50));
 		window.drawString("Wordle", 325, 50);
 		drawRow(window);
 		drawTyped(window);
 		drawKeyboard(window);
 		if(isWon()==true) {
-			window.drawString("You won!",400,60);
+			window.setFont(new Font("Arial",Font.BOLD, 50));
+			window.drawString("You won!",500,250);
 		}
 		else if(guessesLeft==0) {
-			window.drawString("GAME OVER", 225, 50);
+			window.setFont(new Font("Arial",Font.BOLD, 50));
+			window.drawString("GAME OVER", 500, 250);
+			window.setFont(new Font("Arial",Font.BOLD, 30));
+			window.drawString("The word was " + sol, 500, 450);
 		}
 	}
 	
@@ -258,8 +265,8 @@ public class wordleGraphics extends JPanel implements KeyListener {
 		int j=80;//y
 		for(int a=0;a<result.length;a++) {
 			for(int b=0;b<result[a].length;b++) {
-				if(result[a][b].equals("DarkGray")) {
-					window.setColor(Color.darkGray);
+				if(result[a][b].equals(" ")) {
+					window.setColor(Color.lightGray);
 					window.fillRect(i, j, SCALE, SCALE);
 				}
 				else if(result[a][b].equals("Grey")) {
@@ -356,7 +363,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	}
 	
 	public void drawStrings(Graphics window) {
-		int i =95; //x
+		int i =85; //x
 		int j=120;//y
 		window.setColor(Color.BLACK);
 		for(int a=0;a<6;a++) {
@@ -373,7 +380,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	public void drawTyped(Graphics window) {
 		window.setFont(new Font("Arial",Font.BOLD, 40));
 		window.setColor(Color.BLACK);
-		letx=100;
+		letx=85;
 		for(int x=0;x<typed.length();x++) {
 			window.drawString(typed.substring(x,x+1), letx,lety);
 			letx=letx+SCALE+OFFSET;
