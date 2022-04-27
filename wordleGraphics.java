@@ -308,7 +308,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 				window.setColor(Color.YELLOW);
 			}
 			if(keyboardLetters.get(rowOne.charAt(a)).contentEquals("Gray")) {
-				window.setColor(Color.WHITE);
+				window.setColor(Color.lightGray);
 			}
 			if(keyboardLetters.get(rowOne.charAt(a)).contentEquals("DarkGray")) {
 				window.setColor(Color.darkGray);
@@ -329,7 +329,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 				window.setColor(Color.YELLOW);
 			}
 			if(keyboardLetters.get(rowTwo.charAt(a)).contentEquals("Gray")) {
-				window.setColor(Color.WHITE);
+				window.setColor(Color.lightGray);
 			}
 			if(keyboardLetters.get(rowTwo.charAt(a)).contentEquals("DarkGray")) {
 				window.setColor(Color.darkGray);
@@ -350,7 +350,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 				window.setColor(Color.YELLOW);
 			}
 			if(keyboardLetters.get(rowThree.charAt(a)).contentEquals("Gray")) {
-				window.setColor(Color.WHITE);
+				window.setColor(Color.lightGray);
 			}
 			if(keyboardLetters.get(rowThree.charAt(a)).contentEquals("DarkGray")) {
 				window.setColor(Color.darkGray);
@@ -397,11 +397,11 @@ public class wordleGraphics extends JPanel implements KeyListener {
 	}
 	
 	public void keyPressed(KeyEvent e) {
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";	
 		if(e.getKeyCode()==10 && typed.length()==6) {
 			ges=typed;
-			System.out.println("Guess: " + ges + " sol: " + sol);
+			//System.out.println("Guess: " + ges + " sol: " + sol);
 			if(match(ges,sol)) {
 				repaint();
 				lety= lety+SCALE+OFFSET;
@@ -414,7 +414,7 @@ public class wordleGraphics extends JPanel implements KeyListener {
 			repaint();
 		}
 		else if(e.getKeyCode()==8) {
-			typed=typed.substring(0,typed.length()-1);
+			typed=" " + typed.substring(1,typed.length()-1);
 			repaint();
 		}
 		else if(letters.indexOf(e.getKeyChar())!=-1 && typed.length()<=5) {
